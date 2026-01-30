@@ -1,17 +1,12 @@
-import ScrollDissolveWrapper from '@/components/ScrollDissolveWrapper';
+import HeroSection from '@/components/HeroSection';
 
 
 export default function Home() {
   return (
     <div className="relative min-h-[200vh] bg-black">
       {/* Fixed Scroll-Driven Dissolve Background */}
-      <ScrollDissolveWrapper
-        image1="/images/image1.png"
-        image2="/images/image2.png"
-        video2="/images/VJ_LOOP_FREE_VJ_LOOPS_VJ_LOOP_FOR_VJ_DJ_LED_VISUALS_FREE_VISUALS_4K_1080_1080P.mp4"
-        noiseMap="/images/gradient-noise.png"
-        scrollRange={1000}
-      />
+      {/* Hero Section */}
+      <HeroSection />
 
       {/* Content Layer */}
       <div className="relative z-10">

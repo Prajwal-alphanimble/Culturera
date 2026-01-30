@@ -127,42 +127,34 @@ const ScrollDissolve: React.FC<ScrollDissolveProps> = ({
     useEffect(() => {
         if (!isReady || !kamposRef.current || !dissolveRef.current) return;
 
-        let rafId: number;
+        let animationFrameId: number;
 
         const handleScroll = () => {
             const scrollY = window.scrollY;
             const progress = Math.min(Math.max(scrollY / scrollRange, 0), 1);
-
             dissolveRef.current.progress = progress;
-
-            // Use RAF for smooth rendering with video
-            if (rafId) cancelAnimationFrame(rafId);
-            rafId = requestAnimationFrame(() => {
-                kamposRef.current?.draw();
-            });
+            // Don't call draw here - let the animation loop handle it
         };
 
         // Continuous rendering for video
         const animate = () => {
-            if (kamposRef.current && videoRef.current) {
+            if (kamposRef.current) {
                 kamposRef.current.draw();
             }
-            rafId = requestAnimationFrame(animate);
+            animationFrameId = requestAnimationFrame(animate);
         };
 
         // Initial call
         handleScroll();
 
-        // Start animation loop if video
-        if (videoRef.current) {
-            animate();
-        }
+        // Start animation loop (always, even without video for smooth dissolve)
+        animate();
 
         window.addEventListener('scroll', handleScroll, { passive: true });
 
         return () => {
             window.removeEventListener('scroll', handleScroll);
-            if (rafId) cancelAnimationFrame(rafId);
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
         };
     }, [isReady, scrollRange]);
 
