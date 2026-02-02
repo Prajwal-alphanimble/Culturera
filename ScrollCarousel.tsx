@@ -40,12 +40,11 @@ export default function ScrollCarousel({ slides }: ScrollCarouselProps) {
                         rotation: 0,
                     });
                 } else {
-                    // Other cards start off-screen right, rotated on Z-axis
+                    // Other cards start off-screen right
                     gsap.set(card, {
                         x: '100vw',
-                        scale: 0.6,
-                        rotation: -6,
-                        rotateY: 90,
+                        scale: 0.85,
+                        rotation: -4,
                     });
                 }
             });
@@ -88,12 +87,11 @@ export default function ScrollCarousel({ slides }: ScrollCarouselProps) {
                             duration: 0,
                         });
 
-                        // Animate next card in (right to center) with Z-axis rotation
+                        // Animate next card in (right to center)
                         gsap.to(nextCard, {
-                            x: gsap.utils.interpolate('180vw', 0, progress),
-                            scale: gsap.utils.interpolate(0.6, 1, progress),
-                            rotation: gsap.utils.interpolate(-6, 0, progress),
-                            rotateY: gsap.utils.interpolate(90, 0, progress),
+                            x: gsap.utils.interpolate('100vw', 0, progress),
+                            scale: gsap.utils.interpolate(0.85, 1, progress),
+                            rotation: gsap.utils.interpolate(-4, 0, progress),
                             duration: 0,
                         });
 
@@ -157,60 +155,64 @@ export default function ScrollCarousel({ slides }: ScrollCarouselProps) {
                 Slide {currentIndex + 1} of {slides.length}
             </div>
 
-            {/* Left Panel - Text Content */}
-            <div className="fixed left-0 top-0 w-1/2 h-screen flex items-center z-10 px-16">
-                {slides.map((slide, index) => (
-                    <div
-                        key={`text-${index}`}
-                        ref={(el) => (textRefs.current[index] = el)}
-                        className="absolute inset-0 flex flex-col justify-center px-16"
-                    >
-                        <h1 className="text-6xl font-bold mb-4 text-white">
-                            {slide.title}
-                        </h1>
-                        {slide.subtitle && (
-                            <p className="text-2xl text-white/80 mb-6">
-                                {slide.subtitle}
-                            </p>
-                        )}
-                        <p className="text-lg text-white/90 leading-relaxed max-w-xl">
-                            {slide.description}
-                        </p>
-                        {slide.metadata && (
-                            <p className="text-sm text-white/60 mt-8 uppercase tracking-wider">
-                                {slide.metadata}
-                            </p>
-                        )}
-                    </div>
-                ))}
-            </div>
-
-            {/* Right Panel - Carousel Cards */}
-            <div className="fixed top-0 h-screen flex items-center pointer-events-none z-10" style={{ left: '65%', perspective: '1500px', transformStyle: 'preserve-3d' }}>
-                {slides.map((slide, index) => {
-                    const isVisible = index === prev || index === curr || index === next;
-
-                    return (
+            {/* Sticky Wrapper - contains both panels */}
+            <div className="sticky top-0 h-screen flex">
+                {/* Left Panel - Text Content */}
+                <div className="relative w-1/2 h-full flex items-center px-16">
+                    {slides.map((slide, index) => (
                         <div
-                            key={`card-${index}`}
-                            ref={(el) => (cardsRef.current[index] = el)}
-                            className="absolute w-72 h-96 rounded-3xl bg-white shadow-xl"
-                            style={{
-                                display: isVisible ? 'block' : 'none',
-                                zIndex: index,
-                            }}
+                            key={`text-${index}`}
+                            ref={(el) => (textRefs.current[index] = el)}
+                            className="absolute inset-0 flex flex-col justify-center px-16"
                         >
-                            {slide.visual}
+                            <h1 className="text-6xl font-bold mb-4 text-white">
+                                {slide.title}
+                            </h1>
+                            {slide.subtitle && (
+                                <p className="text-2xl text-white/80 mb-6">
+                                    {slide.subtitle}
+                                </p>
+                            )}
+                            <p className="text-lg text-white/90 leading-relaxed max-w-xl">
+                                {slide.description}
+                            </p>
+                            {slide.metadata && (
+                                <p className="text-sm text-white/60 mt-8 uppercase tracking-wider">
+                                    {slide.metadata}
+                                </p>
+                            )}
                         </div>
-                    );
-                })}
+                    ))}
+                </div>
+
+                {/* Right Panel - Carousel Cards */}
+                <div className="relative h-full flex items-center pointer-events-none overflow-hidden" style={{ width: '50%', perspective: '1500px', transformStyle: 'preserve-3d' }}>
+                    {slides.map((slide, index) => {
+                        const isVisible = index === prev || index === curr || index === next;
+
+                        return (
+                            <div
+                                key={`card-${index}`}
+                                ref={(el) => (cardsRef.current[index] = el)}
+                                className="absolute w-72 h-96 rounded-3xl bg-white shadow-xl"
+                                style={{
+                                    display: isVisible ? 'block' : 'none',
+                                    // Dynamic z-index: current card on top, next card below, others behind
+                                    zIndex: index === curr ? 100 : index === next ? 50 : 1,
+                                }}
+                            >
+                                {slide.visual}
+                            </div>
+                        );
+                    })}
+                </div>
             </div>
 
             {/* Spacer for scroll - creates scrollable area */}
-            <div style={{ height: `${slides.length * 100}vh` }} />
+            <div style={{ height: `${(slides.length - 1) * 100}vh` }} />
 
             {/* Progress indicator */}
-            <div className="fixed bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+            <div className="fixed bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-20 pointer-events-none">
                 {slides.map((_, index) => (
                     <div
                         key={`progress-${index}`}
