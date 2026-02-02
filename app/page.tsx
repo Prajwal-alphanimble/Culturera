@@ -1,7 +1,6 @@
 import HeroSection from '@/components/HeroSection';
 import ExperienceCarouselSection from '@/components/ExperienceCarouselSection';
 import WhatWeDoSection from '@/components/WhatWeDoSection';
-import SectionTransition from '@/components/SectionTransition';
 import Image from 'next/image';
 import { SlideData } from '@/components/ScrollCarousel';
 
@@ -70,22 +69,8 @@ export default function Home() {
       {/* Hero Section */}
       <HeroSection />
 
-      {/* Transition: Hero (light gray) → Experience (dark purple/slate) */}
-      <SectionTransition
-        fromColor="#E5E5E5"
-        toColor="#18181b"
-        height="30vh"
-      />
-
       {/* Experience + Carousel Section (Merged) */}
       <ExperienceCarouselSection slides={carouselSlides} />
-
-      {/* Transition: Experience (purple) → What We Do (black) */}
-      <SectionTransition
-        fromColor="#3b0764"
-        toColor="#000000"
-        height="20vh"
-      />
 
       {/* What We Do Section */}
       <WhatWeDoSection />
@@ -95,5 +80,4 @@ export default function Home() {
     </div>
   );
 }
-
 
