@@ -1,8 +1,9 @@
 import HeroSection from '@/components/HeroSection';
-import ScrollMaskDissolve from '@/components/ScrollMaskDissolve';
-import ExperienceSection from '@/components/ExperienceSection';
-import ScrollCarousel, { SlideData } from '@/ScrollCarousel';
+import ExperienceCarouselSection from '@/components/ExperienceCarouselSection';
+import WhatWeDoSection from '@/components/WhatWeDoSection';
+import SectionTransition from '@/components/SectionTransition';
 import Image from 'next/image';
+import { SlideData } from '@/components/ScrollCarousel';
 
 // Carousel slide data
 const carouselSlides: SlideData[] = [
@@ -66,21 +67,33 @@ const carouselSlides: SlideData[] = [
 export default function Home() {
   return (
     <div className="relative bg-black">
-      {/* Hero Section with Scroll Dissolve */}
-      <ScrollMaskDissolve noiseTexture="/images/gradient-noise.png" scrollRange="100vh">
-        <HeroSection />
-      </ScrollMaskDissolve>
+      {/* Hero Section */}
+      <HeroSection />
 
-      {/* Experience Section */}
-      <ExperienceSection />
+      {/* Transition: Hero (light gray) → Experience (dark purple/slate) */}
+      <SectionTransition
+        fromColor="#E5E5E5"
+        toColor="#18181b"
+        height="30vh"
+      />
 
-      {/* Carousel Section */}
-      <div className="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
-        <ScrollCarousel slides={carouselSlides} />
-      </div>
+      {/* Experience + Carousel Section (Merged) */}
+      <ExperienceCarouselSection slides={carouselSlides} />
+
+      {/* Transition: Experience (purple) → What We Do (black) */}
+      <SectionTransition
+        fromColor="#3b0764"
+        toColor="#000000"
+        height="20vh"
+      />
+
+      {/* What We Do Section */}
+      <WhatWeDoSection />
 
       {/* Spacer for additional content */}
       <div className="h-screen bg-black" />
     </div>
   );
 }
+
+

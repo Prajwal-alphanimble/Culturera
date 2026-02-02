@@ -22,7 +22,9 @@ export default function ScrollCarousel({ slides }: ScrollCarouselProps) {
     const containerRef = useRef<HTMLDivElement>(null);
     const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
     const textRefs = useRef<(HTMLDivElement | null)[]>([]);
+    const indicatorRef = useRef<HTMLDivElement>(null);
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [isInView, setIsInView] = useState(false);
 
     useEffect(() => {
         if (!containerRef.current || slides.length === 0) return;
@@ -53,6 +55,17 @@ export default function ScrollCarousel({ slides }: ScrollCarouselProps) {
             textRefs.current.forEach((text, index) => {
                 if (!text) return;
                 gsap.set(text, { opacity: index === 0 ? 1 : 0 });
+            });
+
+            // ScrollTrigger to detect when carousel section is in view
+            ScrollTrigger.create({
+                trigger: containerRef.current,
+                start: 'top bottom',
+                end: 'bottom top',
+                onEnter: () => setIsInView(true),
+                onLeave: () => setIsInView(false),
+                onEnterBack: () => setIsInView(true),
+                onLeaveBack: () => setIsInView(false),
             });
 
             // Create ScrollTrigger for each card transition
@@ -158,47 +171,57 @@ export default function ScrollCarousel({ slides }: ScrollCarouselProps) {
             {/* Sticky Wrapper - contains both panels */}
             <div className="sticky top-0 h-screen flex">
                 {/* Left Panel - Text Content */}
-                <div className="relative w-1/2 h-full flex items-center px-16">
+                <div className="relative w-1/2 h-full flex items-center px-8 lg:px-16">
                     {slides.map((slide, index) => (
                         <div
                             key={`text-${index}`}
-                            ref={(el) => (textRefs.current[index] = el)}
-                            className="absolute inset-0 flex flex-col justify-center px-16"
+                            ref={(el) => { textRefs.current[index] = el; }}
+                            className="absolute inset-0 flex flex-col justify-center px-8 lg:px-16"
                         >
-                            <h1 className="text-6xl font-bold mb-4 text-white">
+                            {/* Metadata Badge */}
+                            {slide.metadata && (
+                                <div className="mb-6">
+                                    <span className="inline-flex items-center px-4 py-1.5 rounded-full text-xs font-semibold uppercase tracking-wider bg-white/10 text-white/70 backdrop-blur-sm border border-white/10">
+                                        {slide.metadata}
+                                    </span>
+                                </div>
+                            )}
+
+                            {/* Title */}
+                            <h1 className="text-5xl lg:text-7xl font-bold mb-4 text-white leading-tight">
                                 {slide.title}
                             </h1>
+
+                            {/* Subtitle */}
                             {slide.subtitle && (
-                                <p className="text-2xl text-white/80 mb-6">
+                                <p className="text-xl lg:text-2xl text-purple-300 mb-6 font-light">
                                     {slide.subtitle}
                                 </p>
                             )}
-                            <p className="text-lg text-white/90 leading-relaxed max-w-xl">
+
+                            {/* Description */}
+                            <p className="text-base lg:text-lg text-white/80 leading-relaxed max-w-xl">
                                 {slide.description}
                             </p>
-                            {slide.metadata && (
-                                <p className="text-sm text-white/60 mt-8 uppercase tracking-wider">
-                                    {slide.metadata}
-                                </p>
-                            )}
                         </div>
                     ))}
                 </div>
 
                 {/* Right Panel - Carousel Cards */}
-                <div className="relative h-full flex items-center pointer-events-none overflow-hidden" style={{ width: '50%', perspective: '1500px', transformStyle: 'preserve-3d' }}>
+                <div className="relative h-full flex items-center justify-center pointer-events-none overflow-hidden" style={{ width: '50%', perspective: '1500px', transformStyle: 'preserve-3d' }}>
                     {slides.map((slide, index) => {
                         const isVisible = index === prev || index === curr || index === next;
 
                         return (
                             <div
                                 key={`card-${index}`}
-                                ref={(el) => (cardsRef.current[index] = el)}
-                                className="absolute w-72 h-96 rounded-3xl bg-white shadow-xl"
+                                ref={(el) => { cardsRef.current[index] = el; }}
+                                className="absolute w-72 lg:w-80 h-96 lg:h-[28rem] rounded-3xl overflow-hidden shadow-2xl"
                                 style={{
                                     display: isVisible ? 'block' : 'none',
                                     // Dynamic z-index: current card on top, next card below, others behind
                                     zIndex: index === curr ? 100 : index === next ? 50 : 1,
+                                    boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 80px -20px rgba(168, 85, 247, 0.3)',
                                 }}
                             >
                                 {slide.visual}
@@ -211,12 +234,21 @@ export default function ScrollCarousel({ slides }: ScrollCarouselProps) {
             {/* Spacer for scroll - creates scrollable area */}
             <div style={{ height: `${(slides.length - 1) * 100}vh` }} />
 
-            {/* Progress indicator */}
-            <div className="fixed bottom-8 left-1/2 -translate-x-1/2 flex gap-2 z-20 pointer-events-none">
+            {/* Progress indicator - Only visible when carousel is in view */}
+            <div
+                ref={indicatorRef}
+                className={`fixed bottom-8 left-1/2 -translate-x-1/2 flex gap-3 z-50 pointer-events-none transition-all duration-500 ${isInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+                    }`}
+            >
+                {/* Background pill */}
+                <div className="absolute inset-0 -m-3 bg-black/40 backdrop-blur-md rounded-full border border-white/10" />
+
                 {slides.map((_, index) => (
                     <div
                         key={`progress-${index}`}
-                        className={`w-2 h-2 rounded-full transition-all duration-300 ${index === currentIndex ? 'bg-white w-8' : 'bg-white/50'
+                        className={`relative z-10 h-2 rounded-full transition-all duration-500 ${index === currentIndex
+                            ? 'w-8 bg-white shadow-[0_0_12px_rgba(255,255,255,0.6)]'
+                            : 'w-2 bg-white/40 hover:bg-white/60'
                             }`}
                     />
                 ))}
