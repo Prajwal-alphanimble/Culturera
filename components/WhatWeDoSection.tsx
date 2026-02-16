@@ -121,12 +121,14 @@ export default function WhatWeDoSection() {
     return (
         <section
             ref={sectionRef}
-            className="relative bg-black overflow-hidden"
+            className="relative overflow-hidden"
+            style={{ background: 'linear-gradient(180deg, #000000 0%, #0a0a12 30%, #0f0a18 60%, #0a0a12 90%, #000000 100%)' }}
         >
-            {/* Background gradient orbs */}
+            {/* Background gradient orbs - Matching theme */}
             <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-purple-600/20 rounded-full blur-[150px]" />
-                <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-blue-600/20 rounded-full blur-[150px]" />
+                <div className="absolute top-1/4 left-1/4 w-[600px] h-[600px] bg-violet-600/10 rounded-full blur-[180px]" />
+                <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-fuchsia-600/10 rounded-full blur-[180px]" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-cyan-600/5 rounded-full blur-[150px]" />
             </div>
 
             {/* Content container */}

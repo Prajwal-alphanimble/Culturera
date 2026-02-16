@@ -74,11 +74,11 @@ export default function ExperienceCarouselSection({ slides }: ExperienceCarousel
             ref={sectionRef}
             className="relative w-full"
         >
-            {/* Premium Gradient Background */}
-            <div className="absolute inset-0 bg-gradient-to-b from-zinc-900 via-slate-900 to-purple-950 pointer-events-none" />
+            {/* Premium Gradient Background - Matching Hero */}
+            <div className="absolute inset-0 pointer-events-none" style={{ background: 'linear-gradient(180deg, #000000 0%, #0a0a12 20%, #0f0a18 50%, #0a0a12 80%, #000000 100%)' }} />
 
             {/* Subtle gradient overlay for depth */}
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(168,85,247,0.15),transparent_50%)] pointer-events-none" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(139,92,246,0.1),transparent_60%)] pointer-events-none" />
 
             {/* Header Section - "What You Experience" */}
             <div
