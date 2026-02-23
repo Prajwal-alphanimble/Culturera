@@ -1,4 +1,4 @@
-import ScrollCarousel, { SlideData } from '@/ScrollCarousel';
+import ScrollCarousel, { SlideData } from '@/components/ScrollCarousel';
 import Image from 'next/image';
 
 export default function CarouselPage() {

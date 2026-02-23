@@ -3,8 +3,6 @@
 import React, { useRef, useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { useGSAP } from '@gsap/react'; // Assuming we can use this, or fallback to useEffect
-
 // Register ScrollTrigger
 if (typeof window !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger);
