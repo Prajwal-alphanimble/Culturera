@@ -3,6 +3,7 @@
 import React, { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Image from 'next/image';
 import ScrollCarousel, { SlideData } from './ScrollCarousel';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -71,6 +72,7 @@ export default function ExperienceCarouselSection({ slides }: ExperienceCarousel
 
     return (
         <section
+            id="services"
             ref={sectionRef}
             className="relative w-full"
         >
@@ -90,9 +92,13 @@ export default function ExperienceCarouselSection({ slides }: ExperienceCarousel
                     ref={decorRef}
                     className="absolute left-8 top-1/4 md:left-16 lg:left-24"
                 >
-                    <div className="h-32 w-32 overflow-hidden rounded-full border-2 border-white/10 shadow-2xl md:h-40 md:w-40 lg:h-48 lg:w-48">
-                        <div className="h-full w-full bg-gradient-to-br from-violet-500 via-purple-600 to-fuchsia-700 animate-pulse"
-                            style={{ animationDuration: '3s' }}
+                    <div className="relative h-32 w-32 overflow-hidden rounded-full border-2 border-white/20 shadow-2xl md:h-40 md:w-40 lg:h-48 lg:w-48">
+                        <Image
+                            src="/actual/singer.jpg"
+                            alt="Live singer performance"
+                            fill
+                            className="object-cover"
+                            sizes="(max-width: 768px) 128px, (max-width: 1024px) 160px, 192px"
                         />
                     </div>
                     {/* Glow effect */}

@@ -23,6 +23,7 @@ export default function HeroSection() {
 
     return (
         <section
+            id="home"
             ref={heroRef}
             className="hero-section relative min-h-screen w-full overflow-hidden flex flex-col"
             style={{
@@ -46,7 +47,7 @@ export default function HeroSection() {
                     <span className="logo-glow" />
                 </div>
                 <div className="hidden items-center gap-10 md:flex">
-                    {['Home', 'Services', 'Projects', 'About'].map((item, index) => (
+                    {['Home', 'Services', 'Projects', 'About', 'Contact'].map((item, index) => (
                         <Link
                             key={item}
                             href={`#${item.toLowerCase()}`}

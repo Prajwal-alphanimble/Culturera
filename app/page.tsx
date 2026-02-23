@@ -1,6 +1,8 @@
 import HeroSection from '@/components/HeroSection';
 import ExperienceCarouselSection from '@/components/ExperienceCarouselSection';
 import WhatWeDoSection from '@/components/WhatWeDoSection';
+import AboutUsSection from '@/components/AboutUsSection';
+import ContactSection from '@/components/ContactSection';
 import Image from 'next/image';
 import { SlideData } from '@/components/ScrollCarousel';
 
@@ -9,7 +11,7 @@ const carouselSlides: SlideData[] = [
   {
     visual: (
       <div className="w-full h-full relative overflow-hidden rounded-3xl">
-        <Image src="/carousel-1.png" alt="Sound Systems" fill className="object-cover" />
+        <Image src="/actual/sounds.avif" alt="Sound Systems" fill className="object-cover" />
       </div>
     ),
     title: "Sound Systems",
@@ -20,7 +22,7 @@ const carouselSlides: SlideData[] = [
   {
     visual: (
       <div className="w-full h-full relative overflow-hidden rounded-3xl">
-        <Image src="/carousel-2.png" alt="Lighting Solutions" fill className="object-cover" />
+        <Image src="/actual/lighting.jpg" alt="Lighting Solutions" fill className="object-cover" />
       </div>
     ),
     title: "Lighting Design",
@@ -31,7 +33,7 @@ const carouselSlides: SlideData[] = [
   {
     visual: (
       <div className="w-full h-full relative overflow-hidden rounded-3xl">
-        <Image src="/carousel-3.png" alt="Stage Production" fill className="object-cover" />
+        <Image src="/actual/stage.jpg" alt="Stage Production" fill className="object-cover" />
       </div>
     ),
     title: "Stage Production",
@@ -42,7 +44,7 @@ const carouselSlides: SlideData[] = [
   {
     visual: (
       <div className="w-full h-full relative overflow-hidden rounded-3xl">
-        <Image src="/carousel-4.png" alt="Event Management" fill className="object-cover" />
+        <Image src="/actual/event.jpg" alt="Event Management" fill className="object-cover" />
       </div>
     ),
     title: "Event Management",
@@ -53,7 +55,7 @@ const carouselSlides: SlideData[] = [
   {
     visual: (
       <div className="w-full h-full relative overflow-hidden rounded-3xl">
-        <Image src="/carousel-5.png" alt="Visual Effects" fill className="object-cover" />
+        <Image src="/actual/visual.jpg" alt="Visual Effects" fill className="object-cover" />
       </div>
     ),
     title: "Visual Effects",
@@ -75,8 +77,14 @@ export default function Home() {
       {/* What We Do Section */}
       <WhatWeDoSection />
 
+      {/* About Us Section */}
+      <AboutUsSection />
+
+      {/* Contact Section */}
+      <ContactSection />
+
       {/* Spacer for additional content */}
-      <div className="h-screen bg-black" />
+      <div className="h-20 bg-black" />
     </div>
   );
 }
