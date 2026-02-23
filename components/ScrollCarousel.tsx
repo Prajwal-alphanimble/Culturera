@@ -94,7 +94,7 @@ export default function ScrollCarousel({ slides }: ScrollCarouselProps) {
 
                         // Animate current card out (center to left)
                         gsap.to(currentCard, {
-                            x: gsap.utils.interpolate('0vw', '-100vw', progress),
+                            x: gsap.utils.interpolate(0, '-100vw' as any, progress),
                             scale: gsap.utils.interpolate(1, 0.6, progress),
                             rotation: gsap.utils.interpolate(0, 6, progress),
                             duration: 0,
@@ -102,7 +102,7 @@ export default function ScrollCarousel({ slides }: ScrollCarouselProps) {
 
                         // Animate next card in (right to center)
                         gsap.to(nextCard, {
-                            x: gsap.utils.interpolate('100vw', '0vw', progress),
+                            x: gsap.utils.interpolate('100vw', 0 as any, progress),
                             scale: gsap.utils.interpolate(0.85, 1, progress),
                             rotation: gsap.utils.interpolate(-4, 0, progress),
                             duration: 0,
