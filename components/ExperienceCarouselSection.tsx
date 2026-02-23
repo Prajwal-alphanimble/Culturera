@@ -93,12 +93,10 @@ export default function ExperienceCarouselSection({ slides }: ExperienceCarousel
                     className="absolute left-8 top-1/4 md:left-16 lg:left-24"
                 >
                     <div className="relative h-32 w-32 overflow-hidden rounded-full border-2 border-white/20 shadow-2xl md:h-40 md:w-40 lg:h-48 lg:w-48">
-                        <Image
+                        <img
                             src="/actual/singer.jpg"
                             alt="Live singer performance"
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 768px) 128px, (max-width: 1024px) 160px, 192px"
+                            className="w-full h-full object-cover"
                         />
                     </div>
                     {/* Glow effect */}

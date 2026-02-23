@@ -11,7 +11,7 @@ const carouselSlides: SlideData[] = [
   {
     visual: (
       <div className="w-full h-full relative overflow-hidden rounded-3xl">
-        <Image src="/actual/sounds.avif" alt="Sound Systems" fill className="object-cover" />
+        <img src="/actual/sounds.avif" alt="Sound Systems" className="w-full h-full object-cover" />
       </div>
     ),
     title: "Sound Systems",
@@ -22,7 +22,7 @@ const carouselSlides: SlideData[] = [
   {
     visual: (
       <div className="w-full h-full relative overflow-hidden rounded-3xl">
-        <Image src="/actual/lighting.jpg" alt="Lighting Solutions" fill className="object-cover" />
+        <img src="/actual/lighting.jpg" alt="Lighting Solutions" className="w-full h-full object-cover" />
       </div>
     ),
     title: "Lighting Design",
@@ -33,7 +33,7 @@ const carouselSlides: SlideData[] = [
   {
     visual: (
       <div className="w-full h-full relative overflow-hidden rounded-3xl">
-        <Image src="/actual/stage.jpg" alt="Stage Production" fill className="object-cover" />
+        <img src="/actual/stage.jpg" alt="Stage Production" className="w-full h-full object-cover" />
       </div>
     ),
     title: "Stage Production",
@@ -44,7 +44,7 @@ const carouselSlides: SlideData[] = [
   {
     visual: (
       <div className="w-full h-full relative overflow-hidden rounded-3xl">
-        <Image src="/actual/event.jpg" alt="Event Management" fill className="object-cover" />
+        <img src="/actual/event.jpg" alt="Event Management" className="w-full h-full object-cover" />
       </div>
     ),
     title: "Event Management",
@@ -55,7 +55,7 @@ const carouselSlides: SlideData[] = [
   {
     visual: (
       <div className="w-full h-full relative overflow-hidden rounded-3xl">
-        <Image src="/actual/visual.jpg" alt="Visual Effects" fill className="object-cover" />
+        <img src="/actual/visual.jpg" alt="Visual Effects" className="w-full h-full object-cover" />
       </div>
     ),
     title: "Visual Effects",

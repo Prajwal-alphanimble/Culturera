@@ -82,7 +82,7 @@ export default function WhatWeDoSection() {
 
         const ctx = gsap.context(() => {
             // Horizontal scroll animation
-            gsap.to(track, {
+            const scrollTween = gsap.to(track, {
                 x: -totalWidth,
                 ease: 'none',
                 scrollTrigger: {
@@ -105,7 +105,7 @@ export default function WhatWeDoSection() {
                         scale: 1,
                         scrollTrigger: {
                             trigger: card,
-                            containerAnimation: gsap.to(track, { x: -totalWidth }),
+                            containerAnimation: scrollTween,
                             start: 'left 80%',
                             end: 'left 20%',
                             scrub: true,
@@ -164,11 +164,10 @@ export default function WhatWeDoSection() {
                         >
                             {/* Background Image */}
                             <div className="absolute inset-0 transition-transform duration-700 group-hover:scale-110">
-                                <Image
+                                <img
                                     src={card.image}
                                     alt={card.title}
-                                    fill
-                                    className="object-cover"
+                                    className="w-full h-full object-cover"
                                 />
                             </div>
 
