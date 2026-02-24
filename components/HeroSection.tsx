@@ -41,9 +41,11 @@ export default function HeroSection() {
             {/* Navigation Layer */}
             <nav className="relative z-20 flex w-full items-center justify-between px-6 py-6 md:px-12 lg:px-20">
                 <div className="logo-wrapper">
-                    <span className="text-2xl md:text-3xl font-black tracking-tight bg-gradient-to-r from-white via-purple-200 to-cyan-200 bg-clip-text text-transparent">
-                        Culturera
-                    </span>
+                    <img 
+                        src="/logo.png" 
+                        alt="Culturera Logo" 
+                        className="h-12 md:h-16 w-auto object-contain"
+                    />
                     <span className="logo-glow" />
                 </div>
                 <div className="hidden items-center gap-10 md:flex">
