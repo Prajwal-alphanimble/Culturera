@@ -3,7 +3,6 @@
 import React, { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Image from 'next/image';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -76,22 +75,23 @@ export default function WhatWeDoSection() {
 
         const track = trackRef.current;
         const cards = track.querySelectorAll('.event-card');
-
-        // Calculate total scroll width
-        const totalWidth = track.scrollWidth - window.innerWidth;
+        const images = Array.from(track.querySelectorAll('img'));
+        const getTotalWidth = () => Math.max(track.scrollWidth - window.innerWidth, 0);
+        const imageListeners: Array<{ img: HTMLImageElement; handler: () => void }> = [];
 
         const ctx = gsap.context(() => {
             // Horizontal scroll animation
             const scrollTween = gsap.to(track, {
-                x: -totalWidth,
+                x: () => -getTotalWidth(),
                 ease: 'none',
                 scrollTrigger: {
                     trigger: sectionRef.current,
                     start: 'top top',
-                    end: `+=${totalWidth}`,
+                    end: () => `+=${getTotalWidth()}`,
                     scrub: 1,
                     pin: true,
                     anticipatePin: 1,
+                    invalidateOnRefresh: true,
                 },
             });
 
@@ -115,7 +115,41 @@ export default function WhatWeDoSection() {
             });
         }, sectionRef);
 
-        return () => ctx.revert();
+        const refreshScroll = () => ScrollTrigger.refresh();
+
+        if (images.length === 0) {
+            requestAnimationFrame(refreshScroll);
+        } else {
+            let loadedCount = 0;
+
+            images.forEach((img) => {
+                if (img.complete) {
+                    loadedCount += 1;
+                    return;
+                }
+
+                const handler = () => {
+                    loadedCount += 1;
+                    if (loadedCount >= images.length) refreshScroll();
+                };
+
+                img.addEventListener('load', handler);
+                img.addEventListener('error', handler);
+                imageListeners.push({ img, handler });
+            });
+
+            if (loadedCount >= images.length) {
+                requestAnimationFrame(refreshScroll);
+            }
+        }
+
+        return () => {
+            imageListeners.forEach(({ img, handler }) => {
+                img.removeEventListener('load', handler);
+                img.removeEventListener('error', handler);
+            });
+            ctx.revert();
+        };
     }, []);
 
     return (

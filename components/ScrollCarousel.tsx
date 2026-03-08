@@ -23,11 +23,26 @@ export default function ScrollCarousel({ slides }: ScrollCarouselProps) {
     const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
     const textRefs = useRef<(HTMLDivElement | null)[]>([]);
     const indicatorRef = useRef<HTMLDivElement>(null);
+    const touchStartXRef = useRef<number | null>(null);
+    const touchEndXRef = useRef<number | null>(null);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [isInView, setIsInView] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
-        if (!containerRef.current || slides.length === 0) return;
+        const mediaQuery = window.matchMedia('(max-width: 1023px)');
+        const updateIsMobile = () => setIsMobile(mediaQuery.matches);
+
+        updateIsMobile();
+        mediaQuery.addEventListener('change', updateIsMobile);
+
+        return () => mediaQuery.removeEventListener('change', updateIsMobile);
+    }, []);
+
+    useEffect(() => {
+        if (!containerRef.current || slides.length === 0 || isMobile) {
+            return;
+        }
 
         const ctx = gsap.context(() => {
             // Set initial positions for all cards
@@ -144,7 +159,126 @@ export default function ScrollCarousel({ slides }: ScrollCarouselProps) {
         return () => {
             ctx.revert();
         };
-    }, [slides]);
+    }, [slides, isMobile]);
+
+    if (slides.length === 0) return null;
+
+    const activeSlide = slides[currentIndex];
+
+    const goToSlide = (nextIndex: number) => {
+        setCurrentIndex(Math.max(0, Math.min(nextIndex, slides.length - 1)));
+    };
+
+    const handleTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
+        touchStartXRef.current = event.changedTouches[0]?.clientX ?? null;
+        touchEndXRef.current = null;
+    };
+
+    const handleTouchMove = (event: React.TouchEvent<HTMLDivElement>) => {
+        touchEndXRef.current = event.changedTouches[0]?.clientX ?? null;
+    };
+
+    const handleTouchEnd = () => {
+        if (touchStartXRef.current === null || touchEndXRef.current === null) return;
+
+        const swipeDistance = touchStartXRef.current - touchEndXRef.current;
+        const swipeThreshold = 50;
+
+        if (swipeDistance > swipeThreshold) {
+            goToSlide(currentIndex + 1);
+        } else if (swipeDistance < -swipeThreshold) {
+            goToSlide(currentIndex - 1);
+        }
+
+        touchStartXRef.current = null;
+        touchEndXRef.current = null;
+    };
+
+    if (isMobile) {
+        return (
+            <div ref={containerRef} className="relative w-full overflow-hidden px-4 pb-10 pt-8">
+                <div
+                    className="overflow-hidden rounded-3xl"
+                    onTouchStart={handleTouchStart}
+                    onTouchMove={handleTouchMove}
+                    onTouchEnd={handleTouchEnd}
+                >
+                    <div
+                        className="flex transition-transform duration-500 ease-out"
+                        style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+                    >
+                        {slides.map((slide, index) => (
+                            <div
+                                key={`mobile-card-${index}`}
+                                className="w-full shrink-0 rounded-3xl overflow-hidden shadow-2xl"
+                                style={{ boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 80px -20px rgba(168, 85, 247, 0.3)' }}
+                            >
+                                <div className="aspect-[4/5] w-full">
+                                    {slide.visual}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+
+                <div className="mt-6 min-h-[220px] text-white">
+                    {activeSlide.metadata && (
+                        <div className="mb-4">
+                            <span className="inline-flex items-center rounded-full border border-white/10 bg-white/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-white/70 backdrop-blur-sm">
+                                {activeSlide.metadata}
+                            </span>
+                        </div>
+                    )}
+
+                    <h2 className="text-3xl font-bold leading-tight sm:text-4xl">
+                        {activeSlide.title}
+                    </h2>
+
+                    {activeSlide.subtitle && (
+                        <p className="mb-4 mt-3 text-lg font-light text-purple-300">
+                            {activeSlide.subtitle}
+                        </p>
+                    )}
+
+                    <p className="text-sm leading-relaxed text-white/80 sm:text-base">
+                        {activeSlide.description}
+                    </p>
+                </div>
+
+                <div className="mt-6 flex items-center justify-between gap-4">
+                    <button
+                        type="button"
+                        onClick={() => goToSlide(currentIndex - 1)}
+                        disabled={currentIndex === 0}
+                        className="inline-flex h-11 min-w-11 items-center justify-center rounded-full border border-white/20 bg-black/30 px-4 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-40"
+                    >
+                        Prev
+                    </button>
+
+                    <div className="flex items-center gap-2">
+                        {slides.map((_, index) => (
+                            <button
+                                key={`mobile-progress-${index}`}
+                                type="button"
+                                onClick={() => goToSlide(index)}
+                                aria-label={`Go to slide ${index + 1}`}
+                                className={`h-3 rounded-full transition-all duration-300 ${index === currentIndex ? 'w-8 bg-white' : 'w-3 bg-white/40'}`}
+                            />
+                        ))}
+                    </div>
+
+                    <button
+                        type="button"
+                        onClick={() => goToSlide(currentIndex + 1)}
+                        disabled={currentIndex === slides.length - 1}
+                        className="inline-flex h-11 min-w-11 items-center justify-center rounded-full border border-white/20 bg-black/30 px-4 text-sm font-medium text-white disabled:cursor-not-allowed disabled:opacity-40"
+                    >
+                        Next
+                    </button>
+                </div>
+            </div>
+        );
+    }
 
     // Determine which three slides to render
     const getVisibleSlides = () => {
