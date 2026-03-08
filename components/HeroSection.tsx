@@ -50,7 +50,7 @@ export default function HeroSection() {
             <nav className="relative z-20 flex w-full items-center justify-between px-4 sm:px-6 py-4 sm:py-6 md:px-12 lg:px-20">
                 <div className="logo-wrapper">
                     <img 
-                        src="/logo1.png" 
+                        src="/Layer1.png" 
                         alt="Culturera Logo" 
                         className="h-10 sm:h-12 md:h-16 w-auto object-contain"
                     />
