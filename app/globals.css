@@ -139,4 +139,10 @@
   body {
     @apply bg-background text-foreground;
   }
+  /* Prevent horizontal overflow on mobile only - fixes scroll without breaking desktop GSAP animations */
+  @media (max-width: 1023px) {
+    html, body {
+      overflow-x: hidden;
+    }
+  }
 }

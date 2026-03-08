@@ -1,14 +1,22 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 
 export default function HeroSection() {
     const heroRef = useRef<HTMLElement>(null);
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < 768);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     useEffect(() => {
         const handleMouseMove = (e: MouseEvent) => {
-            if (!heroRef.current) return;
+            if (!heroRef.current || isMobile) return;
             const { clientX, clientY } = e;
             const { width, height } = heroRef.current.getBoundingClientRect();
             const x = (clientX / width - 0.5) * 20;
@@ -19,7 +27,7 @@ export default function HeroSection() {
 
         window.addEventListener('mousemove', handleMouseMove);
         return () => window.removeEventListener('mousemove', handleMouseMove);
-    }, []);
+    }, [isMobile]);
 
     return (
         <section
@@ -39,12 +47,12 @@ export default function HeroSection() {
             </div>
 
             {/* Navigation Layer */}
-            <nav className="relative z-20 flex w-full items-center justify-between px-6 py-6 md:px-12 lg:px-20">
+            <nav className="relative z-20 flex w-full items-center justify-between px-4 sm:px-6 py-4 sm:py-6 md:px-12 lg:px-20">
                 <div className="logo-wrapper">
                     <img 
-                        src="/logo.png" 
+                        src="/logo1.png" 
                         alt="Culturera Logo" 
-                        className="h-12 md:h-16 w-auto object-contain"
+                        className="h-10 sm:h-12 md:h-16 w-auto object-contain"
                     />
                     <span className="logo-glow" />
                 </div>
@@ -61,15 +69,15 @@ export default function HeroSection() {
                         </Link>
                     ))}
                 </div>
-                <button className="glass-button md:hidden">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button className="glass-button md:hidden p-2">
+                    <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
                 </button>
             </nav>
 
             {/* Main Content */}
-            <div className="relative z-10 flex flex-grow flex-col items-center justify-center px-6 py-12 md:py-0">
+            <div className="relative z-10 flex flex-grow flex-col items-center justify-center px-4 sm:px-6 py-8 sm:py-12 md:py-0">
 
                 {/* Video-Masked Title */}
                 <div className="title-container">
@@ -126,13 +134,13 @@ export default function HeroSection() {
                 <div className="subtitle-section">
                     <div className="subtitle-line" />
                     <div className="subtitle-content">
-                        <p className="subtitle-text">
+                        <p className="subtitle-text text-xs sm:text-sm">
                             <span className="highlight">IMMERSE</span> YOURSELF IN THE
                         </p>
-                        <p className="subtitle-text">
+                        <p className="subtitle-text text-xs sm:text-sm">
                             FUTURE OF <span className="highlight">DIGITAL ART</span> & CULTURE
                         </p>
-                        <p className="subtitle-text">
+                        <p className="subtitle-text text-xs sm:text-sm">
                             EXPERIENCE THE <span className="highlight">UNIMAGINABLE</span>
                         </p>
                     </div>
@@ -141,16 +149,16 @@ export default function HeroSection() {
 
                 {/* CTA Section */}
                 <div className="cta-section">
-                    <button className="cta-primary">
+                    <button className="cta-primary text-xs sm:text-sm px-4 sm:px-6 py-3 sm:py-4">
                         <span className="cta-text">EXPLORE NOW</span>
                         <span className="cta-icon">
-                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                             </svg>
                         </span>
                         <span className="cta-glow" />
                     </button>
-                    <button className="cta-secondary">
+                    <button className="cta-secondary text-xs sm:text-sm px-4 sm:px-6 py-3 sm:py-4">
                         VIEW PROJECTS
                     </button>
                 </div>
@@ -195,11 +203,11 @@ export default function HeroSection() {
                 <div className="scroll-mouse">
                     <div className="scroll-wheel" />
                 </div>
-                <span className="scroll-text">SCROLL TO EXPLORE</span>
+                <span className="scroll-text text-[10px] sm:text-xs">SCROLL TO EXPLORE</span>
             </div>
 
             {/* Bottom Fade Transition */}
-            <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-black via-black/80 to-transparent pointer-events-none z-10" />
+            <div className="absolute bottom-0 left-0 right-0 h-32 sm:h-48 bg-gradient-to-t from-black via-black/80 to-transparent pointer-events-none z-10" />
 
             <style jsx>{`
                 .hero-section {
@@ -224,26 +232,44 @@ export default function HeroSection() {
                 }
 
                 .orb-1 {
-                    width: 600px;
-                    height: 600px;
+                    width: 300px;
+                    height: 300px;
                     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                    top: -200px;
-                    left: -200px;
+                    top: -100px;
+                    left: -100px;
                     animation-delay: 0s;
                 }
 
+                @media (min-width: 768px) {
+                    .orb-1 {
+                        width: 600px;
+                        height: 600px;
+                        top: -200px;
+                        left: -200px;
+                    }
+                }
+
                 .orb-2 {
-                    width: 500px;
-                    height: 500px;
+                    width: 250px;
+                    height: 250px;
                     background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-                    bottom: -150px;
-                    right: -150px;
+                    bottom: -75px;
+                    right: -75px;
                     animation-delay: -7s;
                 }
 
+                @media (min-width: 768px) {
+                    .orb-2 {
+                        width: 500px;
+                        height: 500px;
+                        bottom: -150px;
+                        right: -150px;
+                    }
+                }
+
                 .orb-3 {
-                    width: 400px;
-                    height: 400px;
+                    width: 200px;
+                    height: 200px;
                     background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
                     top: 50%;
                     left: 50%;
@@ -252,14 +278,27 @@ export default function HeroSection() {
                     opacity: 0.3;
                 }
 
+                @media (min-width: 768px) {
+                    .orb-3 {
+                        width: 400px;
+                        height: 400px;
+                    }
+                }
+
                 .grid-overlay {
                     position: absolute;
                     inset: 0;
                     background-image: 
                         linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
                         linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-                    background-size: 50px 50px;
+                    background-size: 30px 30px;
                     mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 40%, transparent 100%);
+                }
+
+                @media (min-width: 768px) {
+                    .grid-overlay {
+                        background-size: 50px 50px;
+                    }
                 }
 
                 @keyframes orbFloat {
@@ -340,7 +379,6 @@ export default function HeroSection() {
                 }
 
                 .glass-button {
-                    padding: 10px;
                     background: rgba(255, 255, 255, 0.1);
                     border: 1px solid rgba(255, 255, 255, 0.2);
                     border-radius: 12px;
@@ -375,9 +413,16 @@ export default function HeroSection() {
                 .title-wrapper {
                     position: relative;
                     width: 100%;
-                    height: 120px;
+                    height: 80px;
                     overflow: hidden;
-                    border-radius: 20px;
+                    border-radius: 16px;
+                }
+
+                @media (min-width: 640px) {
+                    .title-wrapper {
+                        height: 100px;
+                        border-radius: 20px;
+                    }
                 }
 
                 @media (min-width: 768px) {
@@ -396,8 +441,14 @@ export default function HeroSection() {
                 .hero-title-text {
                     font-family: system-ui, -apple-system, sans-serif;
                     font-weight: 900;
-                    font-size: 15vw;
+                    font-size: 18vw;
                     letter-spacing: -0.03em;
+                }
+
+                @media (min-width: 640px) {
+                    .hero-title-text {
+                        font-size: 16vw;
+                    }
                 }
 
                 @media (min-width: 1024px) {
@@ -417,10 +468,17 @@ export default function HeroSection() {
                 .subtitle-section {
                     display: flex;
                     align-items: center;
-                    gap: 24px;
-                    margin-top: 40px;
+                    gap: 16px;
+                    margin-top: 24px;
                     animation: subtitleReveal 1s ease 0.3s forwards;
                     opacity: 0;
+                }
+
+                @media (min-width: 768px) {
+                    .subtitle-section {
+                        gap: 24px;
+                        margin-top: 40px;
+                    }
                 }
 
                 @keyframes subtitleReveal {
@@ -430,10 +488,16 @@ export default function HeroSection() {
                 }
 
                 .subtitle-line {
-                    width: 60px;
+                    width: 40px;
                     height: 1px;
                     background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
                     display: none;
+                }
+
+                @media (min-width: 640px) {
+                    .subtitle-line {
+                        width: 60px;
+                    }
                 }
 
                 @media (min-width: 768px) {
@@ -448,15 +512,24 @@ export default function HeroSection() {
 
                 .subtitle-text {
                     font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', monospace;
-                    font-size: 0.7rem;
-                    letter-spacing: 0.3em;
+                    font-size: 0.65rem;
+                    letter-spacing: 0.2em;
                     color: rgba(255, 255, 255, 0.5);
-                    line-height: 2;
+                    line-height: 1.8;
+                }
+
+                @media (min-width: 640px) {
+                    .subtitle-text {
+                        font-size: 0.75rem;
+                        letter-spacing: 0.25em;
+                    }
                 }
 
                 @media (min-width: 768px) {
                     .subtitle-text {
                         font-size: 0.85rem;
+                        letter-spacing: 0.3em;
+                        line-height: 2;
                     }
                 }
 
@@ -470,16 +543,24 @@ export default function HeroSection() {
                     display: flex;
                     flex-direction: column;
                     align-items: center;
-                    gap: 16px;
-                    margin-top: 48px;
+                    gap: 12px;
+                    margin-top: 32px;
                     animation: ctaReveal 1s ease 0.6s forwards;
                     opacity: 0;
+                }
+
+                @media (min-width: 640px) {
+                    .cta-section {
+                        gap: 16px;
+                        margin-top: 40px;
+                    }
                 }
 
                 @media (min-width: 768px) {
                     .cta-section {
                         flex-direction: row;
                         gap: 24px;
+                        margin-top: 48px;
                     }
                 }
 
@@ -493,18 +574,22 @@ export default function HeroSection() {
                     position: relative;
                     display: flex;
                     align-items: center;
-                    gap: 12px;
-                    padding: 16px 32px;
+                    gap: 8px;
                     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
                     border: none;
                     border-radius: 50px;
                     color: white;
                     font-weight: 600;
-                    font-size: 0.875rem;
                     letter-spacing: 0.1em;
                     cursor: pointer;
                     overflow: hidden;
                     transition: all 0.3s ease;
+                }
+
+                @media (min-width: 640px) {
+                    .cta-primary {
+                        gap: 12px;
+                    }
                 }
 
                 .cta-primary:hover {
@@ -540,13 +625,11 @@ export default function HeroSection() {
                 }
 
                 .cta-secondary {
-                    padding: 16px 32px;
                     background: transparent;
                     border: 1px solid rgba(255, 255, 255, 0.3);
                     border-radius: 50px;
                     color: rgba(255, 255, 255, 0.8);
                     font-weight: 500;
-                    font-size: 0.875rem;
                     letter-spacing: 0.1em;
                     cursor: pointer;
                     transition: all 0.3s ease;
@@ -575,14 +658,21 @@ export default function HeroSection() {
                 /* Scroll Indicator */
                 .scroll-indicator {
                     position: absolute;
-                    bottom: 32px;
+                    bottom: 24px;
                     left: 50%;
                     transform: translateX(-50%);
                     display: flex;
                     flex-direction: column;
                     align-items: center;
-                    gap: 12px;
+                    gap: 8px;
                     animation: scrollPulse 2s ease-in-out infinite;
+                }
+
+                @media (min-width: 640px) {
+                    .scroll-indicator {
+                        bottom: 32px;
+                        gap: 12px;
+                    }
                 }
 
                 @keyframes scrollPulse {
@@ -597,21 +687,36 @@ export default function HeroSection() {
                 }
 
                 .scroll-mouse {
-                    width: 26px;
-                    height: 40px;
+                    width: 22px;
+                    height: 34px;
                     border: 2px solid rgba(255, 255, 255, 0.3);
                     border-radius: 15px;
                     display: flex;
                     justify-content: center;
-                    padding-top: 8px;
+                    padding-top: 6px;
+                }
+
+                @media (min-width: 640px) {
+                    .scroll-mouse {
+                        width: 26px;
+                        height: 40px;
+                        padding-top: 8px;
+                    }
                 }
 
                 .scroll-wheel {
-                    width: 4px;
-                    height: 8px;
+                    width: 3px;
+                    height: 6px;
                     background: rgba(255, 255, 255, 0.5);
                     border-radius: 2px;
                     animation: scrollWheel 1.5s ease-in-out infinite;
+                }
+
+                @media (min-width: 640px) {
+                    .scroll-wheel {
+                        width: 4px;
+                        height: 8px;
+                    }
                 }
 
                 @keyframes scrollWheel {
@@ -626,9 +731,16 @@ export default function HeroSection() {
                 }
 
                 .scroll-text {
-                    font-size: 0.65rem;
-                    letter-spacing: 0.3em;
+                    font-size: 0.6rem;
+                    letter-spacing: 0.2em;
                     color: rgba(255, 255, 255, 0.4);
+                }
+
+                @media (min-width: 640px) {
+                    .scroll-text {
+                        font-size: 0.65rem;
+                        letter-spacing: 0.3em;
+                    }
                 }
             `}</style>
         </section>

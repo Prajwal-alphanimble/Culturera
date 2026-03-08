@@ -85,14 +85,14 @@ export default function ExperienceCarouselSection({ slides }: ExperienceCarousel
             {/* Header Section - "What You Experience" */}
             <div
                 ref={headerRef}
-                className="relative z-10 min-h-screen flex flex-col items-center justify-center px-6 py-20 text-center"
+                className="relative z-10 min-h-[80vh] sm:min-h-screen flex flex-col items-center justify-center px-4 sm:px-6 py-16 sm:py-20 text-center"
             >
-                {/* Decorative floating circle */}
+                {/* Decorative floating circle - Hidden on mobile, shown on md+ */}
                 <div
                     ref={decorRef}
-                    className="absolute left-8 top-1/4 md:left-16 lg:left-24"
+                    className="hidden md:block absolute left-8 top-1/4 md:left-16 lg:left-24"
                 >
-                    <div className="relative h-32 w-32 overflow-hidden rounded-full border-2 border-white/20 shadow-2xl md:h-40 md:w-40 lg:h-48 lg:w-48">
+                    <div className="relative h-24 w-24 md:h-40 md:w-40 lg:h-48 lg:w-48 overflow-hidden rounded-full border-2 border-white/20 shadow-2xl">
                         <img
                             src="/actual/singer.jpg"
                             alt="Live singer performance"
@@ -106,7 +106,7 @@ export default function ExperienceCarouselSection({ slides }: ExperienceCarousel
                 {/* Main Headline */}
                 <h2
                     ref={headlineRef}
-                    className="mb-8 max-w-5xl font-serif text-5xl font-bold italic leading-[1.1] tracking-tight text-white md:text-6xl lg:text-7xl xl:text-8xl"
+                    className="mb-6 sm:mb-8 max-w-5xl font-serif text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold italic leading-[1.1] tracking-tight text-white"
                 >
                     <span className="block">WHAT YOU</span>
                     <span className="block bg-gradient-to-r from-white via-purple-200 to-white bg-clip-text text-transparent">
@@ -117,7 +117,7 @@ export default function ExperienceCarouselSection({ slides }: ExperienceCarousel
                 {/* Description */}
                 <p
                     ref={subtitleRef}
-                    className="max-w-3xl text-base leading-relaxed text-zinc-300 md:text-lg lg:text-xl"
+                    className="max-w-3xl text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed text-zinc-300 px-2 sm:px-0"
                 >
                     Culturera is your partner in creating unforgettable events. With years of industry experience, we
                     provide comprehensive event production services, including cutting-edge{' '}
@@ -129,10 +129,10 @@ export default function ExperienceCarouselSection({ slides }: ExperienceCarousel
                 </p>
 
                 {/* Scroll indicator */}
-                <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 opacity-60">
-                    <span className="text-xs uppercase tracking-widest text-white/60">Scroll to explore</span>
-                    <div className="w-6 h-10 rounded-full border-2 border-white/30 flex items-start justify-center p-2">
-                        <div className="w-1.5 h-3 bg-white/60 rounded-full animate-bounce" />
+                <div className="absolute bottom-8 sm:bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 sm:gap-3 opacity-60">
+                    <span className="text-[10px] sm:text-xs uppercase tracking-widest text-white/60">Scroll to explore</span>
+                    <div className="w-5 h-8 sm:w-6 sm:h-10 rounded-full border-2 border-white/30 flex items-start justify-center p-1.5 sm:p-2">
+                        <div className="w-1 h-2 sm:w-1.5 sm:h-3 bg-white/60 rounded-full animate-bounce" />
                     </div>
                 </div>
             </div>
